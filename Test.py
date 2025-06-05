@@ -21,16 +21,19 @@ def parse_args():
     parser.add_argument(
         "--test_dataset", "-t",
         type=str, required=True,
-        help="Path to the CSV (or other) describing the test dataset"
+        help="Path to the CSV describing the test dataset"
     )
     parser.add_argument(
         "--checkpoint", "-c",
         type=str, required=True,
         help="Path to the checkpoint .pt file to load"
     )
-    
+    parser.add_argument(
+        "--dataset", "-d",
+        type=str, choices=["inria", "whu"], required=True,
+        help="Which dataset's normalization stats to use: 'inria' or 'whu'"
+    )
     return parser.parse_args()
-
 
 if __name__ == '__main__':
     args = parse_args()
@@ -69,6 +72,12 @@ if __name__ == '__main__':
         # load state dict path
         'load_checkpoint_path':args.checkpoint,
     }
+    if args.dataset == "inria":
+        model_infos["PRIOR_MEAN"] = [0.40672500537632994, 0.42829032416229895, 0.39331840468605667]
+        model_infos['PRIOR_STD']  = [0.029498464618176873, 0.027740088491668233, 0.028246722411879095]
+    else:  # args.dataset == "whu"
+        model_infos['PRIOR_MEAN'] = [0.4352682576428411, 0.44523221318154493, 0.41307610541534784]
+        model_infos['PRIOR_STD']  = [0.026973196780331585, 0.026424642808887323, 0.02791246590291434]
     if model_infos['IS_VAL']:
         os.makedirs(model_infos['log_path']+'/val', exist_ok=True)
     if model_infos['IS_TEST']:
