@@ -9,7 +9,7 @@ import numpy as np
 
 
 class GetTrainTestCSV:
-    def __init__(self, dataset_path_list, csv_name, img_format_list, negative_keep_rate=0.1, output_path ):
+    def __init__(self, dataset_path_list, csv_name, img_format_list,output_path,  negative_keep_rate=0.1):
         self.data_path_list = dataset_path_list
         self.img_format_list = img_format_list
         self.negative_keep_rate = negative_keep_rate
