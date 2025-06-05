@@ -131,7 +131,7 @@ if __name__ == '__main__':
     csv_name = 'test_data.csv'
     img_format_list = ['png','tif','tiff','jpg']
 
-    getTrainTestCSV = GetTrainTestCSV(dataset_path_list=[args.folder_path], csv_name=args.csv_name, img_format_list=img_format_list, output_path = args.output_path)
+    getTrainTestCSV = GetTrainTestCSV(dataset_path_list=[args.folder_path], csv_name=args.csv_name + ".csv", img_format_list=img_format_list, output_path = args.output_path)
     getTrainTestCSV.get_csv_file(phase='seg')
 
 
