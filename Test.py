@@ -33,6 +33,7 @@ def parse_args():
 
 
 if __name__ == '__main__':
+    args = parse_args
     model_infos = {
         # vgg16_bn, resnet50, resnet18
         'backbone': 'resnet50',
