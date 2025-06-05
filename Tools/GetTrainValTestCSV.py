@@ -1,7 +1,7 @@
 import os
 import glob
 import random
-
+import argparse
 import pandas as pd
 import cv2
 import tqdm
@@ -9,11 +9,11 @@ import numpy as np
 
 
 class GetTrainTestCSV:
-    def __init__(self, dataset_path_list, csv_name, img_format_list, negative_keep_rate=0.1):
+    def __init__(self, dataset_path_list, csv_name, img_format_list, negative_keep_rate=0.1, output_path ):
         self.data_path_list = dataset_path_list
         self.img_format_list = img_format_list
         self.negative_keep_rate = negative_keep_rate
-        self.save_path_csv = r'generate_dep_info'
+        self.save_path_csv = output_path
         os.makedirs(self.save_path_csv, exist_ok=True)
         self.csv_name = csv_name
 
@@ -114,15 +114,24 @@ class GetTrainTestCSV:
         data_annotation.to_csv(writer_name, index_label=False)
         print(os.path.basename(writer_name) + ' file saves successfully!')
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Generate CSV files for training/testing data')
+    parser.add_argument('--folder_path', '-f', type=str, required=True, 
+                        help='Path to the folder containing images')
+    parser.add_argument('--csv_name', '-c', type=str, required=True,
+                        help='Name of the output CSV file')
+    parser.add_argument('--output_path', '-o', type=str, required=True)
+    return parser.parse_args()
 
 if __name__ == '__main__':
+    args = parse_args()
     data_path_list = [
         '/mnt/home/cky/Code/STT/Data/test_samples/img'
                       ]
     csv_name = 'test_data.csv'
-    img_format_list = ['png']
+    img_format_list = ['png','tif','tiff','jpg']
 
-    getTrainTestCSV = GetTrainTestCSV(dataset_path_list=data_path_list, csv_name=csv_name, img_format_list=img_format_list)
+    getTrainTestCSV = GetTrainTestCSV(dataset_path_list=[args.folder_path], csv_name=args.csv_name, img_format_list=img_format_list, output_path = args.output_path)
     getTrainTestCSV.get_csv_file(phase='seg')
 
 
